@@ -3,6 +3,8 @@ description: dahliaOS notifications backend
 version: 1.0.0-alpha.1
 homepage: https://dahliaos.io/
 
+publish_to: none
+
 environment:
   sdk: '>=2.8.1 <3.0.0'
 
