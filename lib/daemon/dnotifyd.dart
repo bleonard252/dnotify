@@ -7,7 +7,7 @@ ServerSocket dnotifySock;
 
 const _logcolor = 34;
 
-void start() async {
+void start({bool verbose = false}) async {
   File.fromUri(Uri.file("/tmp/dnotify-live.json")).openWrite();
   try {
     dnotifySock = await ServerSocket.bind(InternetAddress("/tmp/dnotify.sock", type: InternetAddressType.unix), 0);
@@ -19,7 +19,7 @@ void start() async {
     utf8.decoder.bind(event).listen((strdata) {
       //ignore:unused_local_variable
       var data = jsonDecode(strdata);
-      print(strdata);
+      if (verbose) printlog("dnotifyd/listen", strdata, color: _logcolor, verbose: true);
     });
   });
   printlog("dnotifyd/start", "Started", color: _logcolor);
