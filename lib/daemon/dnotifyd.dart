@@ -10,6 +10,7 @@ void start() {
     dnotifySock = value;
     dnotifySock.listen((event) {
       utf8.decoder.bind(event).listen((strdata) {
+        //ignore:unused_local_variable
         var data = jsonDecode(strdata);
         print(strdata);
       });
