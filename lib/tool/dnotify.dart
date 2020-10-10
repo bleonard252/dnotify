@@ -13,7 +13,7 @@ void send(String title, String text) {
         "title": title,
         "body": text
       }));
-      dnotifySock.cancel();
+      s.destroy();
     });
   })
   .catchError((error) => throw error);
