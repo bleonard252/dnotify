@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:dart_console/dart_console.dart';
 import 'package:dnotify/src/loghelper.dart';
 import 'package:dnotify/src/fileupdatewith.dart';
 import 'package:uuid/uuid.dart';
@@ -62,6 +63,14 @@ void start({bool verbose = false, bool libnotify = false}) async {
     });
   });
   printlog("dnotifyd/start", "Started", color: _logcolor);
+  ProcessSignal.sigint.watch().listen((event) {
+    dnotifySock.close();
+    try {File.fromUri(Uri.file("/tmp/dnotify-live.json")).deleteSync();} catch(e) {}
+    try {File.fromUri(Uri.file("/tmp/dnotify.sock")).deleteSync();} catch(e) {}
+    Console().eraseLine(); Console().cursorLeft(); Console().cursorLeft();
+    printlog("dnotifyd", "Stopped.", color: 1);
+    exit(0);
+  });
 }
 
 //TODO: implement a D-Bus interface for org.freedesktop.Notifications
