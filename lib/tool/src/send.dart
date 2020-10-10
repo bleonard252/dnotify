@@ -10,7 +10,7 @@ const _logcolor = 25;
 void send(String title, String text, {String icon, int priority, bool verbose}) {
   //File.fromUri(Uri.file("/tmp/dnotify.sock")).createSync();
   Socket.startConnect(InternetAddress("/tmp/dnotify.sock", type: InternetAddressType.unix), 0)
-  .catchError((Exception error) {
+  .catchError((error) {
     printlog("dnotify/send", "An error occurred! See stack trace below:", color: _logcolor, error: true);
     print(error);
     exit(2);
@@ -32,7 +32,7 @@ void send(String title, String text, {String icon, int priority, bool verbose}) 
       printlog("dnotify/send", "Sent!", color: _logcolor);
     });
   })
-  .catchError((Exception error) {
+  .catchError((error) {
     printlog("dnotify/send", "An error occurred! See stack trace below:", color: _logcolor, error: true);
     print(error);
     exit(2);

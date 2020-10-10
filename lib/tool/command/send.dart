@@ -15,7 +15,7 @@ class SendCommand extends Command {
     );
     argParser.addOption("icon",
       abbr: "i",
-      help: "Set the pathname or Material icon name to use for the icon.",
+      help: "Set the pathname or Material icon name (when prefixed with md:) to use for the icon.",
       defaultsTo: "settings"
     );
   }

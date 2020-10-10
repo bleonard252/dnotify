@@ -2,7 +2,7 @@ import 'package:dart_console/dart_console.dart';
 
 var con = Console();
 
-void printlog(String source, dynamic object, {int color = 9, bool error = false, bool verbose = true}) {
+void printlog(String source, dynamic object, {int color = 9, bool error = false, bool verbose = false}) {
   if (error) {
     con.write("[");
     con.setForegroundColor(ConsoleColor.brightRed);
