@@ -12,11 +12,16 @@ void main(List<String> arguments) {
     defaultsTo: false,
     help: "Echo all incoming notifications to the command line"
   );
+  cmdr.argParser.addFlag("libnotify",
+    defaultsTo: false,
+    help: "Mirror notifications to libnotify. Used for testing, will be removed.",
+    hide: true
+  );
   var res = cmdr.parse(arguments);
   args = res;
   if (res.command != null) cmdr.runCommand(res);
   else {
     printlog("dnotifyd/init", "dnotifyd starting...", color: 93);
-    start();
+    start(verbose: args["verbose"], libnotify: args["libnotify"]);
   }
 }

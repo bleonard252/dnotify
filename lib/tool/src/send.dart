@@ -22,6 +22,7 @@ void send(String title, String text, {String icon, int priority, bool verbose}) 
       var x = jsonEncode({
         "title": title,
         "body": text,
+        "source": "dnotify-1.0.0-alpha.1", //TODO: require a token
         if (priority != null) "priority": priority,
         if (icon != null) "icon": icon
       });

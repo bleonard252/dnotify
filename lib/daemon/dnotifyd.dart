@@ -1,14 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:dnotify/src/loghelper.dart';
 import 'package:dnotify/src/fileupdatewith.dart';
+import 'package:uuid/uuid.dart';
 
 ServerSocket dnotifySock;
 
 const _logcolor = 34;
 
-void start({bool verbose = false}) async {
+void start({bool verbose = false, bool libnotify = false}) async {
+  if (libnotify) printlog("dnotifyd/start", "Mirroring notifications to libnotify! Since this is only for testing, it will be removed!", warning: true, color: _logcolor);
   try {
     File.fromUri(Uri.file("/tmp/dnotify-live.json")).deleteSync();
   } catch(e) {}
@@ -32,7 +35,19 @@ void start({bool verbose = false}) async {
         //TODO: test if this is worthy
         //TODO: also take in cancel events
         if (json is List && data is Map) {
-          json.add(data);
+          if (!data.containsKey("source") && verbose) {
+            printlog("dnotifyd/update", "Source string missing from notification, rejecting...", error: true, verbose: true);
+            return json;
+          }
+          switch (data["type"]) {
+            case "cancel":
+              json.removeWhere((element) => element["id"] == data["id"]);
+              break;
+            default:
+              if (!data.containsKey("id")) data["id"] = Uuid().v5(data["source"], Random().nextInt(64).toRadixString(24));
+              json.add(data);
+              break;
+          }
           return json;
         }
         else {
@@ -40,6 +55,10 @@ void start({bool verbose = false}) async {
           return json;
         }
       });
+      if (libnotify) 
+        Process.run("notify-send", ["-t", "1000", "-i", data.containsKey("icon") ? data["icon"].replaceFirst("md:", "") : "settings", data["title"], data["body"]]).then((v) {
+          printlog("dnotifyd/libnotify", "Dispatch successful", color: _logcolor);
+        });
     });
   });
   printlog("dnotifyd/start", "Started", color: _logcolor);

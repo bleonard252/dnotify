@@ -2,12 +2,25 @@ import 'package:dart_console/dart_console.dart';
 
 var con = Console();
 
-void printlog(String source, dynamic object, {int color = 9, bool error = false, bool verbose = false}) {
+void printlog(
+  String source, dynamic object, {
+    int color = 9, 
+    bool error = false, 
+    bool verbose = false,
+    bool warning = false,
+  }) {
   if (error) {
     con.write("[");
     con.setForegroundColor(ConsoleColor.brightRed);
     con.setTextStyle(bold: true);
     con.write("ERROR");
+    con.resetColorAttributes();
+    con.write("] ");
+  } else if (warning) {
+    con.write("[");
+    con.setForegroundColor(ConsoleColor.brightYellow);
+    con.setTextStyle(bold: true);
+    con.write("WARNING");
     con.resetColorAttributes();
     con.write("] ");
   } else if (verbose) {
