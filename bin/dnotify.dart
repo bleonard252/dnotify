@@ -1,4 +1,5 @@
 import 'package:args/command_runner.dart';
+import 'package:dnotify/tool/command/list.dart';
 import 'package:dnotify/tool/command/send.dart';
 
 void main(List<String> arguments) {
@@ -12,6 +13,7 @@ void main(List<String> arguments) {
   );
   // Add commands
   cmdr.addCommand(SendCommand());
+  cmdr.addCommand(ListCommand());
   // Run commands
   var res = cmdr.parse(arguments);
   cmdr.runCommand(res);
