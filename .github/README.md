@@ -5,14 +5,26 @@
 <a href="https://paypal.me/officialdahliaos">Donate</a> ●
 <a href="https://github.com/dahlia-os/documentation">Documentation</a>
 
-# name_of_repo
-Insert some badges from https://shields.io
-(Mostly a License, Issues open badges (can also be localized, website and ci/deploy badges))
+# DNotify
+<!--Insert some badges from https://shields.io
+(Mostly a License, Issues open badges (can also be localized, website and ci/deploy badges))-->
 
- - **Short introduction** of the repository (can and should be in multiple lines)
- - **Add new headers** depending on what the repo is and what you want to write
- - **Do not change** the Contribute and License header sections, they're good to go
- - **These lines in this header sections can go**, also make sure you set correct topics on the repo
+ - :speaker: **Listen** for notifications
+ - :speech_balloon: **Send** notifications on behalf of your app
+
+## How to use
+Currently, dnotify doesn't have binaries, so you can test it by cloning and running these commands in different terminals from within the repository:
+```sh
+# Terminal 1
+dart bin/dnotifyd.dart
+# This will keep running in the background
+```
+```sh
+# Terminal 2
+dart bin/dnotify.dart --help
+```
+* **`Pro Tip:`** you can add `&` after the first command to use the same terminal!
+* **`Note:`** With `dnotify` tool in verbose mode, you'll get duplicate output.
 
 ## Contribute
 
