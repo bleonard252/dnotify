@@ -21,6 +21,12 @@ class SendCommand extends Command {
   }
   
   run() {
-    send(argResults.rest[0], argResults.rest[1]);
+    send(
+      argResults.rest[0], 
+      argResults.rest[1],
+      icon: argResults["icon"],
+      priority: int.parse(argResults["priority"]),
+      verbose: globalResults["verbose"]
+    );
   }
 }
