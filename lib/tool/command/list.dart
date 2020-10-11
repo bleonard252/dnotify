@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
-import 'package:dnotify/tool/src/send.dart';
 
 class ListCommand extends Command {
   final String name = "list";
   final String description = "List active notifications.";
   final String invocation = "dnotify list [options]";
+  final List<String> aliases = ["ls"];
 
   ListCommand() {
     argParser.addFlag("oneline",

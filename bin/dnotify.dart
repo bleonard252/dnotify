@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:args/command_runner.dart';
+import 'package:dnotify/tool/command/cancel.dart';
 import 'package:dnotify/tool/command/list.dart';
 import 'package:dnotify/tool/command/send.dart';
 
@@ -13,7 +16,10 @@ void main(List<String> arguments) {
   );
   // Add commands
   cmdr.addCommand(SendCommand());
-  cmdr.addCommand(ListCommand());
+  if (File.fromUri(Uri.file("/tmp/dnotify-live.json")).existsSync()) {
+    cmdr.addCommand(ListCommand());
+    cmdr.addCommand(CancelCommand());
+  }
   // Run commands
   var res = cmdr.parse(arguments);
   cmdr.runCommand(res);

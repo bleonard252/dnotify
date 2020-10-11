@@ -56,8 +56,8 @@ void start({bool verbose = false, bool libnotify = false}) async {
           return json;
         }
       });
-      if (libnotify) 
-        Process.run("notify-send", ["-t", "1000", "-i", data.containsKey("icon") ? data["icon"].replaceFirst("md:", "") : "settings", data["title"], data["body"]]).then((v) {
+      if (libnotify && data.containsKey("title")) 
+        Process.run("notify-send", ["-t", "1000", "-i", data.containsKey("icon") ? data["icon"].replaceFirst("md:", "") : "settings", data["title"], data.containsKey("body") ? data["body"] : ""]).then((v) {
           printlog("dnotifyd/libnotify", "Dispatch successful", color: _logcolor);
         });
     });
