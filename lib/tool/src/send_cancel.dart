@@ -15,7 +15,5 @@ void send_cancel(String id, {bool verbose = false, bool useTcp = false}) async {
     },
     logcolor: _logcolor,
     logsrc: "dnotify/cancel",
-    useTcp: useTcp,
-    verbose: verbose
   );
 }

@@ -19,6 +19,11 @@ void main(List<String> arguments) {
     help: "Mirror notifications to libnotify. Used for testing, will be removed.",
     hide: true
   );
+  cmdr.argParser.addFlag("use-tcp", 
+    abbr: "t",
+    help: "Use a TCP socket on machines that don't work with Unix domain sockets.",
+    defaultsTo: (Platform.isLinux) ? false : true //pretty much anything that's not Linux
+  );
   var res = cmdr.parse(arguments);
   args = res;
   if (res.command != null) cmdr.runCommand(res);

@@ -3,21 +3,23 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:dart_console/dart_console.dart';
+import 'package:dnotify/src/constants.dart';
 import 'package:dnotify/src/loghelper.dart';
 import 'package:dnotify/src/fileupdatewith.dart';
 import 'package:uuid/uuid.dart';
 
-ServerSocket dnotifySock;
-
 const _logcolor = 34;
 
-void start({bool verbose = false, bool libnotify = false}) async {
+ServerSocket dnotifySock;
+
+void start({bool verbose = false, bool libnotify = false, bool useTcp = false}) async {
   if (libnotify) printlog("dnotifyd/start", "Mirroring notifications to libnotify! Since this is only for testing, it will be removed!", warning: true, color: _logcolor);
   try {
     File.fromUri(Uri.file("/tmp/dnotify-live.json")).deleteSync();
   } catch(e) {}
   try {
-    dnotifySock = await ServerSocket.bind(InternetAddress("/tmp/dnotify.sock", type: InternetAddressType.unix), 0);
+    if (useTcp) dnotifySock = await ServerSocket.bind(InternetAddress.loopbackIPv6, tcpPort);
+    else dnotifySock = await ServerSocket.bind(InternetAddress("/tmp/dnotify.sock", type: InternetAddressType.unix), 0);
   } on SocketException {
     printlog("dnotifyd/start", "Failed to open socket! Are you running another instance of dnotifyd?", color: _logcolor, error: true);
     exit(1);
