@@ -12,7 +12,17 @@ const _logcolor = 34;
 
 ServerSocket dnotifySock;
 
-void start({bool verbose = false, bool libnotify = false, bool useTcp = false}) async {
+Future<ServerSocket> start({
+    /// Whether to log verbosely
+    bool verbose = false, 
+    /// Whether to use libnotify
+    @Deprecated("Testing only") bool libnotify = false,
+    /// Whether to use TCP
+    bool useTcp = false,
+    /// The function to call (can be async)
+    /// when a new notification arrives
+    void notificationReceived(dynamic jsondata)
+  }) async {
   if (libnotify) printlog("dnotifyd/start", "Mirroring notifications to libnotify! Since this is only for testing, it will be removed!", warning: true, color: _logcolor);
   try {
     File.fromUri(Uri.file("/tmp/dnotify-live.json")).deleteSync();
@@ -58,6 +68,7 @@ void start({bool verbose = false, bool libnotify = false, bool useTcp = false}) 
           return json;
         }
       });
+      notificationReceived(data);
       if (libnotify && data.containsKey("title")) 
         Process.run("notify-send", ["-t", "1000", "-i", data.containsKey("icon") ? data["icon"].replaceFirst("md:", "") : "settings", data["title"], data.containsKey("body") ? data["body"] : ""]).then((v) {
           printlog("dnotifyd/libnotify", "Dispatch successful", color: _logcolor);
@@ -73,6 +84,7 @@ void start({bool verbose = false, bool libnotify = false, bool useTcp = false}) 
     printlog("dnotifyd", "Stopped.", color: 1);
     exit(0);
   });
+  return dnotifySock;
 }
 
 //TODO: implement a D-Bus interface for org.freedesktop.Notifications
