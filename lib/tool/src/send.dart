@@ -2,40 +2,25 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dnotify/src/loghelper.dart';
+import 'package:dnotify/tool/src/socket.dart';
 
 ConnectionTask<Socket> dnotifySock;
 
 const _logcolor = 25;
 
-void send(String title, String text, {String icon, int priority, bool verbose}) {
+void send(String title, String text, {String icon, int priority, bool verbose, bool useTcp}) {
   //File.fromUri(Uri.file("/tmp/dnotify.sock")).createSync();
-  Socket.startConnect(InternetAddress("/tmp/dnotify.sock", type: InternetAddressType.unix), 0)
-  .catchError((error) {
-    printlog("dnotify/send", "An error occurred! See stack trace below:", color: _logcolor, error: true);
-    print(error);
-    exit(2);
-  })
-  .then((value) {
-    dnotifySock = value;
-    dnotifySock.socket.then((s) { 
-      if (verbose) printlog("dnotify/send", "Encoding data to JSON...", color: _logcolor, verbose: true);
-      var x = jsonEncode({
-        "title": title,
-        "body": text,
-        "source": "dnotify-1.0.0-alpha.1", //TODO: require a token
-        if (priority != null) "priority": priority,
-        if (icon != null) "icon": icon
-      });
-      if (verbose) printlog("dnotify/send", "Sending notification...", color: _logcolor, verbose: true);
-      s.write(x);
-      if (verbose) printlog("dnotify/send", x, color: _logcolor, verbose: true);
-      s.destroy();
-      printlog("dnotify/send", "Sent!", color: _logcolor);
-    });
-  })
-  .catchError((error) {
-    printlog("dnotify/send", "An error occurred! See stack trace below:", color: _logcolor, error: true);
-    print(error);
-    exit(2);
-  });
+  socketTransmitJSON(
+    {
+      "title": title,
+      "body": text,
+      "source": "dnotify-1.0.0-alpha.1", //TODO: require a token
+      if (priority != null) "priority": priority,
+      if (icon != null) "icon": icon
+    },
+    logcolor: _logcolor,
+    logsrc: "dnotify/send",
+    useTcp: useTcp,
+    verbose: verbose
+  );
 }
