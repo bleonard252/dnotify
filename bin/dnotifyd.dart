@@ -28,7 +28,8 @@ void main(List<String> arguments) {
   args = res;
   if (res.command != null) cmdr.runCommand(res);
   else {
-    printlog("dnotifyd/init", "dnotifyd starting...", color: 93);
-    start(verbose: args["verbose"], libnotify: args["libnotify"]);
+    if (args["use-tcp"]) printlog("dnotifyd/init", "dnotifyd starting using TCP...", color: 93);
+    else printlog("dnotifyd/init", "dnotifyd starting using UNIX...", color: 93);
+    start(verbose: args["verbose"], libnotify: args["libnotify"], useTcp: args["use-tcp"]);
   }
 }
