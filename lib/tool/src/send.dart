@@ -20,5 +20,6 @@ void send(String title, String text, {String icon, int priority, bool verbose, b
     },
     logcolor: _logcolor,
     logsrc: "dnotify/send",
+    useTcp: useTcp
   );
 }

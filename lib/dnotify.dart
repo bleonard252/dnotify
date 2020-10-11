@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:args/args.dart';
 import 'package:dnotify/daemon/dnotifyd.dart' as _daemon;
+import 'package:dnotify/tool/dnotify.dart' as _const;
 import 'package:dnotify/tool/src/send.dart' as _send;
 import 'package:dnotify/tool/src/send_cancel.dart' as _cancel;
 
@@ -23,10 +25,11 @@ abstract class DNotify {
     String title, 
     String text,
     {
-      String icon,
-      int priority,
+      String icon = "md:settings_applications",
+      int priority = 3,
       bool useTcp = null,
     }) async {
+    _const.globalResults = {"useTcp": useTcp == null ? useTcp : Platform.isLinux ? false : true, "verbose": false};
     await _send.send(
       title, text, 
       icon: icon, 
