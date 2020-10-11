@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:args/args.dart';
 import 'package:dnotify/daemon/dnotifyd.dart' as _daemon;
+import 'package:dnotify/src/constants.dart' as _constants;
 import 'package:dnotify/tool/dnotify.dart' as _const;
 import 'package:dnotify/tool/src/send.dart' as _send;
 import 'package:dnotify/tool/src/send_cancel.dart' as _cancel;
@@ -28,13 +29,15 @@ abstract class DNotify {
       String icon = "md:settings_applications",
       int priority = 3,
       bool useTcp = null,
+      String source
     }) async {
     _const.globalResults = {"useTcp": useTcp == null ? useTcp : Platform.isLinux ? false : true, "verbose": false};
     await _send.send(
       title, text, 
       icon: icon, 
       priority: priority, 
-      useTcp: useTcp != null ? useTcp : Platform.isLinux ? false : true
+      useTcp: useTcp != null ? useTcp : Platform.isLinux ? false : true,
+      source: source != null ? source : "dnotify-1.0.0-alpha.1",
     );
   }
   /// Cancel a notification by its ID.

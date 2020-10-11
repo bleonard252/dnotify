@@ -44,6 +44,7 @@ Future<ServerSocket> start({
         file.createSync();
         file.writeAsStringSync("[]");
       }
+      var newdata = {};
       file.updateWithJSON<List>((json) {
         //TODO: test if this is worthy
         //TODO: also take in cancel events
@@ -68,7 +69,9 @@ Future<ServerSocket> start({
           return json;
         }
       });
-      if (notificationReceived != null) notificationReceived(data);
+      if (notificationReceived != null 
+      && data["type"] != "cancel") 
+        notificationReceived(data);
       if (libnotify && data.containsKey("title")) 
         Process.run("notify-send", ["-t", "1000", "-i", data.containsKey("icon") ? data["icon"].replaceFirst("md:", "") : "settings", data["title"], data.containsKey("body") ? data["body"] : ""]).then((v) {
           printlog("dnotifyd/libnotify", "Dispatch successful", color: _logcolor);
