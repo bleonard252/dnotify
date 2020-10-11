@@ -26,6 +26,8 @@ dart bin/dnotify.dart --help
 * **`Pro Tip:`** you can add `&` after the first command to use the same terminal!
 * **`Note:`** With `dnotify` tool in verbose mode, you'll get duplicate output.
 
+You can also build the binaries yourself by running `./build.sh`, they appear in `build/output/release`.
+
 ## Contribute
 
 If you're wondering how to contribute to the project, please refer to [CONTRIBUTING.md](./CONTRIBUTING.md)
